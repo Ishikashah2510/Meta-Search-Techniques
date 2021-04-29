@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <style>
+
+table {
+  border-collapse: collapse;
+  width: 30%;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<center>
+    <h2>Practical 8</h2>
+    <h3>18BCE081</h3>
+    <h4>Implementing meta search ranking techniques for a voting system</h4>
+    <br>
+    <form action="{% url 'ranking' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        Select CSV file
+        <br>
+        <input type="file" accept=".csv" name="data" id="data" required/>
+        <br><br>
+        Select type of ranking you would like to use
+        <br>
+        <input type="radio" name="ranking" value="Borda" required>Borda
+        <br>
+        <input type="radio" name="ranking" value="Condorcet">Condorcet
+        <br>
+        <input type="radio" name="ranking" value="Reciprocal">Reciprocal
+        <br><br>
+        <input type="submit">
+    </form>
+</center>
+
+<br><br><br>
+
+<center>
+{% if x == 0 %}
+    {% if count_table %}
+        <table>
+            <tr>
+                <td><b>Candidate</b></td><td><b>&nbsp&nbspTotal Vote Count</b></td>
+            </tr>
+            {% for candidate, vote_count in count_table.items %}
+                <tr>
+                    <td>{{ candidate }}</td><td>{{ vote_count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endif %}
+
+{% if x == 1 %}
+    {% if count_table %}
+        <table>
+            <tr>
+                <td>Candidate</td><td>&nbsp&nbspWinner</td><td>Votes</td>
+            </tr>
+            {% for candidate, vote_count in count_table.items %}
+                <tr>
+                    <td>{{ candidate }}</td><td>{{ vote_count.0 }}</td><td>{{ vote_count.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endif %}
+
+
+    <br>
+
+    {% if ordered_list %}
+        The following is the ranking<br>
+        {% for i in ordered_list %}
+            {{ forloop.counter }}.{{ i }}<br>
+        {% endfor %}
+        <br>
+    {% endif %}
+    {% if winner %}
+        The winner is {{ winner }}
+        {% else %}
+            {% if x == 1 %}
+                There is no winner since no candidate won all pair wise comparisons
+            {% endif %}
+    {% endif %}
+</center>
+
+</body>
+</html>
