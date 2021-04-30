@@ -77,7 +77,7 @@ def condorcet_ranking(data):
                     voteb += int(j)
         if votea > voteb:
             pair_winner[p] = [p[0], (votea, voteb)]
-        else:
+        elif votea < voteb:
             pair_winner[p] = [p[1], (votea, voteb)]
 
     wins = {}
